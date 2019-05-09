@@ -1,6 +1,14 @@
 let express = require('express')
 let app = express()
 
+//*** Add your routes between here
+
+
+//*** and here
+
+const { spawn } = require('child_process');
+const chokidar = require('chokidar');
+
 let pollServer =
     `let __version = undefined
 
@@ -27,16 +35,16 @@ let checkVersion = async () => {
 checkVersion()
 `
 
-//*** Add your routes between here
-
-
-//*** and here
-
-
-let __version = "" + Math.floor(Math.random() * 10000000000)
+let genId = () => "" + Math.floor(Math.random() * 10000000000)
+let __version = genId()
 app.get("/__version", (req, res) => {
     res.send(__version)
 })
+
+chokidar.watch(__dirname + '/build', { ignored: /(^|[\/\\])\../ }).on('all', (event, path) => {
+    webpackError = undefined
+    __version = genId()
+});
 
 let webpackError = undefined
 app.all('/*', (req, res, next) => {
@@ -50,22 +58,12 @@ app.use('/', express.static('build'));
 app.all('/*', (req, res) => {
     res.sendFile(__dirname + '/build/index.html');
 });
+let counter = 0
 let setup = async () => {
-    let shell = require('shelljs');
-    let exec = shell.exec
-    let runWebpack = () => {
-        return new Promise((res, rej) => {
-            exec('npx webpack --display errors-only', (code, stdout, stderr) => {
-                res({ code, stdout, stderr })
-            })
-        });
-    }
-
-    let { code, stdout, stderr } = await runWebpack()
-
-    if (code !== 0) {
-        webpackError = stdout
-    }
+    let webpack = spawn('npx', ['webpack', '--watch', '--display', 'errors-only'])
+    webpack.stdout.on('data', data => {
+        webpackError = data.toString()
+    })
     app.listen(4000, '0.0.0.0', () => { console.log("Server running on port 4000") })
 }
 setup()
