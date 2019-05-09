@@ -46,6 +46,7 @@ chokidar.watch(__dirname + '/build', { ignored: /(^|[\/\\])\../ }).on('all', (ev
     __version = genId()
 });
 
+
 let webpackError = undefined
 app.all('/*', (req, res, next) => {
     if (webpackError) {
