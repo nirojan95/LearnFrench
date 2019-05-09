@@ -61,7 +61,8 @@ app.all('/*', (req, res) => {
 });
 let counter = 0
 let setup = async () => {
-    let webpack = spawn('npx', ['webpack', '--watch', '--display', 'errors-only'])
+    const  cmd = /^win/.test(process.platform) ? 'npx.cmd' : 'npx'
+    let webpack = spawn(cmd, ['webpack', '--watch', '--display', 'errors-only'])
     webpack.stdout.on('data', data => {
         webpackError = data.toString()
     })
