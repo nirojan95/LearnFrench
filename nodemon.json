@@ -1,15 +1,8 @@
 {
     "restartable": "rs",
     "ignore": [
-        ".git",
-        "node_modules/**",
         "build"
     ],
-    "ext": "js,jsx",
-    "verbose": true,
-    "watch": [
-        "src/",
-        "public/",
-        "./server.js"
-    ]
+    "ext": "js,jsx,html,css",
+    "verbose": true
 }

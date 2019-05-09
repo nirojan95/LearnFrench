@@ -1,6 +1,32 @@
 let express = require('express')
 let app = express()
 
+let pollServer =
+    `let __version = undefined
+
+let delay = t => new Promise((res, rej) => setTimeout(() => res(), t))
+let checkVersion = async () => {
+    await fetch('/__version')
+        .then(x => x.text())
+        .then(v => {
+            __version = v
+        })
+        
+
+    while (true) {
+        await delay(300)
+        try {
+            let x = await fetch('/__version')
+            let newVersion = await x.text()
+            if (__version !== newVersion) {
+                location.reload();
+            }
+        } catch (err) { }
+    }
+}
+checkVersion()
+`
+
 //*** Add your routes between here
 
 
@@ -15,7 +41,7 @@ app.get("/__version", (req, res) => {
 let webpackError = undefined
 app.all('/*', (req, res, next) => {
     if (webpackError) {
-        res.send('<h4>' + webpackError + '</h4>')
+        res.send('<h4>' + webpackError + '</h4><script>' + pollServer + '</script>')
     } else {
         next()
     }
@@ -40,7 +66,7 @@ let setup = async () => {
     if (code !== 0) {
         webpackError = stdout
     }
-    app.listen(4000)
+    app.listen(4000, '0.0.0.0', () => { console.log("Server running on port 4000") })
 }
 setup()
 
