@@ -50,7 +50,7 @@ chokidar.watch(__dirname + '/build', { ignored: /(^|[\/\\])\../ }).on('all', (ev
 let webpackError = undefined
 app.all('/*', (req, res, next) => {
     if (webpackError) {
-        res.send('<h4>' + webpackError + '</h4><script>' + pollServer + '</script>')
+        res.send('<pre>' + webpackError + '</pre><script>' + pollServer + '</script>')
     } else {
         next()
     }
