@@ -31,6 +31,10 @@ checkVersion()
 
 
 module.exports = {
+  watchOptions: {
+    poll: true,
+    ignored: /node_modules/
+  },
   mode: "development",
   devtool: "source-map",
   output: {
