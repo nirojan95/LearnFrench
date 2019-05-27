@@ -3,30 +3,68 @@ const InjectPlugin = require('webpack-inject-plugin').default;
 const path = require("path")
 
 let pollServer =
-  `let __version = undefined
+  `  let __init_status = false
+  console.log("what")
+  let __init_magic_reload = async () => {
+    debugger
+    console.log("(****___INIT CALLED")
+      let closed = false
+      let createConnection = () => {
+          console.log("EH")
+          return new Promise((res, rej) => {
+              console.log("*****WAHT")
 
-let delay = t => new Promise((res, rej) => setTimeout(() => res(), t))
-let checkVersion = async () => {
-    await fetch('/__version')
-        .then(x => x.text())
-        .then(v => {
-            __version = v
-        })
-        
+              var ws = new WebSocket('ws://localhost:40510');
+              ws.onopen = function () {
+                  console.log('connected')
+                  res(ws)
+              }
+              ws.onerror = function () {
+                  rej()
+              }
+          })
+      }
 
-    while (true) {
-        await delay(300)
-        try {
-            let x = await fetch('/__version')
-            let newVersion = await x.text()
-            if (__version !== newVersion) {
-                location.reload();
-            }
-        } catch (err) { }
-    }
-}
+      let delay = d => {
+          new Promise((res, rej) => {
+              setTimeout(res, d)
+          })
+      }
+      
+      let tryMany = async () => {
+          console.log("TRYMANY CALLED")
 
-checkVersion()
+          while (true) {
+              console.log("creating")
+              try {
+                  let ret = await createConnection()
+                  return ret
+              } catch (err) { }
+              await delay(2000)
+          }
+      }
+      console.log("*****MAYBE HERE*****")
+      let ws = await tryMany()
+      ws.onmessage = function (ev) {
+          if(closed) return
+          if (!__init_status) {
+              __init_status = true
+          }
+          else {
+              try {ws.close()} catch(err) {}
+              window.location.reload();
+          }
+      }
+      ws.onclose =() => {
+        closed=true;
+        console.log("***======*CLOSING")
+        debugger
+        __init_magic_reload();
+        }
+  }
+  debugger
+  __init_magic_reload()
+
 `
 
 
@@ -88,9 +126,9 @@ module.exports = {
       template: "./public/index.html",
       filename: "./index.html"
     }),
-    new InjectPlugin(function () {
-      return pollServer
-    })
+    // new InjectPlugin(function () {
+    //   return pollServer
+    // })
   ],
 
   entry: {
