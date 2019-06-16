@@ -8,7 +8,7 @@ app.use('/', express.static('build'));
 
 // Your endpoints go after this line
 
-// But before this line
+// Your endpoints go before this line
 
 app.all('/*', (req, res, next) => { // needed for react router
     res.sendFile(__dirname + '/build/index.html');
