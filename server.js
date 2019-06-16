@@ -4,7 +4,7 @@ let reloadMagic = require('./reload-magic.js')
 
 reloadMagic(app)
 
-app.use('/', express.static('build'));
+app.use('/', express.static('build')); // Needed for the HTML and JS files
 
 // Your endpoints go after this line
 
