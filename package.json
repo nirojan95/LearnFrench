@@ -27,6 +27,7 @@
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.3.4",
     "chokidar": "^3.0.0",
+    "react-redux": "6.0.1",
     "express": "^4.16.4",
     "shelljs": "^0.8.3",
     "webpack-inject-plugin": "^1.5.0",
