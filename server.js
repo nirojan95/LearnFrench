@@ -1,19 +1,30 @@
-let express = require('express')
-let app = express()
-let reloadMagic = require('./reload-magic.js')
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Route, BrowserRouter, Link } from "react-router-dom";
 
-reloadMagic(app)
+class UnconnectedApp extends Component {
+  renderHomepage = () => {
+    return (
+      <div>
+        <Link to={"/login"}>Purchase History</Link>
+      </div>
+    );
+  };
 
-app.use('/', express.static('build')); // Needed for the HTML and JS files
-app.use('/', express.static('public')); // Needed for local assets
+  renderLogin = () => {
+    return <Login />;
+  };
 
-// Your endpoints go after this line
+  render = () => {
+    return (
+      <BrowserRouter>
+        <Route exact={true} path="/" component={this.renderHomepage} />
+        <Route exact={true} path="/login" component={this.renderLogin} />
+      </BrowserRouter>
+    );
+  };
+}
 
-// Your endpoints go before this line
+let App = connect()(UnconnectedApp);
 
-app.all('/*', (req, res, next) => { // needed for react router
-    res.sendFile(__dirname + '/build/index.html');
-})
-
-
-app.listen(4000, '0.0.0.0', () => { console.log("Server running on port 4000") })
+export default App;
