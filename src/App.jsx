@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Route, BrowserRouter, Link } from "react-router-dom";
+import Login from "./Login.jsx";
 
 class UnconnectedApp extends Component {
   renderHomepage = () => {
     return (
       <div>
-        <Link to={"/login"}>Purchase History</Link>
+        <Link to={"/login"}>Login</Link>
       </div>
     );
   };
