@@ -1,23 +1,69 @@
 body {
-    background-color: #bbb;
-    margin: 0;
+  background-color: white;
+  margin: 0;
 }
 
 .overlay {
-    z-index:50;
-    position: fixed;
-    left:0;
-    right:0;
-    top:0;
-    bottom:0;
-    background-color:rgba(0,0,0,0.5);
+  z-index: 50;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .popup {
-    z-index:100;
-    position: fixed;
-    top:200px;
-    left:200px;
-    right:200px;
-    background-color:white
+  z-index: 100;
+  position: fixed;
+  top: 200px;
+  left: 200px;
+  right: 200px;
+  background-color: white;
+}
+
+input,
+.btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  margin: 5px 0;
+  opacity: 0.85;
+  display: inline-block;
+  font-size: 17px;
+  line-height: 20px;
+  text-decoration: none; /* remove underline from anchors */
+}
+
+.login-container {
+  text-align: center;
+  border: 1px solid #bbb;
+  font-family: roboto, "Noto Sans Myanmar UI", arial, sans-serif;
+}
+.login-center {
+  padding: 20px;
+  margin: 100px;
+  display: inline-block;
+  border: 1px solid #bbb;
+  border-radius: 3px;
+}
+
+.signin-text {
+  font-size: 25px;
+  margin-bottom: 30px;
+}
+.signup-text {
+  font-size: 25px;
+  margin-bottom: 30px;
+}
+
+.textbox {
+  width: 300px;
+  border: 1px solid rgba(187, 187, 187, 0.377);
+}
+
+.textbox:hover {
+  width: 300px;
+  border: 1px solid grey;
 }

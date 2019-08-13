@@ -58,7 +58,7 @@ app.post("/signup", upload.none(), (req, res) => {
       res.send(JSON.stringify({ success: false }));
     }
     if (user === null) {
-      dbo.collection("users").insertOne({ username, password });
+      dbo.collection("users").insertOne({ username, password: sha1(password) });
       res.send(JSON.stringify({ success: true }));
     }
     res.send(JSON, stringify({ success: false }));

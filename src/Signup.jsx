@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import "./main.css";
 
-class UnconnectedLogin extends Component {
+class UnconnectedSignup extends Component {
   constructor(props) {
     super(props);
     this.state = { password: "", username: "" };
@@ -33,20 +31,29 @@ class UnconnectedLogin extends Component {
       alert("Not a valid Login!");
     }
   };
-
   render() {
     return (
       <div class="login-container">
         <div class="login-center">
-          <div class="signin-text">Sign in</div>
+          <div class="signup-text">Sign Up</div>
           <form onSubmit={this.submitHandler}>
             <div>
               {" "}
               <input
                 class="textbox"
                 type="text"
+                onChange={this.nameChangeHandler}
+                placeholder="Name"
+                required
+              />
+            </div>
+            <div>
+              {" "}
+              <input
+                class="textbox"
+                type="text"
                 onChange={this.usernameChangeHandler}
-                placeholder="Username"
+                placeholder="Email"
                 required
               />
             </div>
@@ -59,17 +66,14 @@ class UnconnectedLogin extends Component {
                 required
               />
             </div>
-            <input type="submit" value="Login" />
+            <input type="submit" value="Create Account" />
           </form>
-          <div>
-            <Link to="/signup">Create An Account</Link>
-          </div>
         </div>
       </div>
     );
   }
 }
 
-let Login = connect()(UnconnectedLogin);
+let Signup = connect()(UnconnectedSignup);
 
-export default Login;
+export default Signup;
