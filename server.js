@@ -56,12 +56,14 @@ app.post("/signup", upload.none(), (req, res) => {
   dbo.collection("users").findOne({ username }, (err, user) => {
     if (err) {
       res.send(JSON.stringify({ success: false }));
+      return;
     }
     if (user === null) {
       dbo.collection("users").insertOne({ username, password: sha1(password) });
       res.send(JSON.stringify({ success: true }));
+      return;
     }
-    res.send(JSON, stringify({ success: false }));
+    res.send(JSON.stringify({ success: false }));
   });
 });
 

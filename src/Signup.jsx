@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 class UnconnectedSignup extends Component {
@@ -20,7 +21,7 @@ class UnconnectedSignup extends Component {
     let data = new FormData();
     data.append("username", this.state.username);
     data.append("password", this.state.password);
-    let response = await fetch("/login", {
+    let response = await fetch("/signup", {
       method: "POST",
       credentials: "include",
       body: data
@@ -28,7 +29,7 @@ class UnconnectedSignup extends Component {
     let responseBody = await response.text();
     let body = JSON.parse(responseBody);
     if (!body.success) {
-      alert("Not a valid Login!");
+      alert("Not a valid username");
     }
   };
   render() {
@@ -68,6 +69,9 @@ class UnconnectedSignup extends Component {
             </div>
             <input type="submit" value="Create Account" />
           </form>
+          <div>
+            <Link to="/login">Already have an Account? Sign in!</Link>
+          </div>
         </div>
       </div>
     );
