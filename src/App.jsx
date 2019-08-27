@@ -36,6 +36,15 @@ class UnconnectedApp extends Component {
     );
   };
 
+  renderTest = routerData => {
+    let testId = routerData.match.params.tid;
+    return (
+      <div>
+        <Test id={testId} />
+      </div>
+    );
+  };
+
   render = () => {
     return (
       <BrowserRouter>
@@ -48,6 +57,11 @@ class UnconnectedApp extends Component {
           path="/practice/:pid"
           component={this.renderPractice}
         />
+        <Route
+          exact={true}
+          path="/test/:tid"
+          component={this.renderTest}
+        ></Route>
       </BrowserRouter>
     );
   };

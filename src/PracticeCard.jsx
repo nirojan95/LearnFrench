@@ -11,12 +11,21 @@ class PracticeCard extends Component {
     this.setState({ isHidden: !this.state.isHidden });
   };
 
+  soundHandler = () => {
+    console.log("in soundHandler");
+    let audio = new Audio(`/${this.props.word.fWord}.mp3`);
+    console.log(audio);
+    audio.play();
+  };
+
   render() {
     return (
       <div className="flex flex-horizontal-center">
         <div className="flex-grid border-bottem padding-bottom">
           <div className="col text-center">
-            <i class="fas fa-volume-up" />
+            <span onClick={this.soundHandler}>
+              <i class="fas fa-volume-up" />
+            </span>
           </div>
           <div className="col">
             <div>{this.props.word.fWord}</div>

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import PracticeCard from "./PracticeCard.jsx";
 
 class Practice extends Component {
@@ -30,6 +31,7 @@ class Practice extends Component {
         {this.state.words.map(word => {
           return <PracticeCard word={word} />;
         })}
+        <Link to="/test/1">Test Your Skills</Link>
       </div>
     );
   }

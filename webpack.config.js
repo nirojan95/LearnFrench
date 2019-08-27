@@ -1,9 +1,8 @@
-const HtmlWebPackPlugin = require("html-webpack-plugin")
-const InjectPlugin = require('webpack-inject-plugin').default;
-const path = require("path")
+const HtmlWebPackPlugin = require("html-webpack-plugin");
+const InjectPlugin = require("webpack-inject-plugin").default;
+const path = require("path");
 
-let pollServer =
-  `  let __init_status = false
+let pollServer = `  let __init_status = false
 
   let __init_magic_reload = async () => {
   
@@ -59,8 +58,7 @@ let pollServer =
   }
   
   __init_magic_reload()
-`
-
+`;
 
 module.exports = {
   watchOptions: {
@@ -70,8 +68,8 @@ module.exports = {
   mode: "development",
   devtool: "source-map",
   output: {
-    publicPath: '/',
-    path: path.join(__dirname, "build"),
+    publicPath: "/",
+    path: path.join(__dirname, "build")
   },
   devServer: {
     port: 3000,
@@ -80,50 +78,55 @@ module.exports = {
       errors: true
     },
     historyApiFallback: {
-      index: '/index.html'
+      index: "/index.html"
     },
     contentBase: path.join(__dirname, "public"),
     hot: true
   },
   module: {
-    rules: [{
-      test: /\.(js|jsx)$/,
-      exclude: /node_modules/,
-      use: {
-        loader: "babel-loader"
-      }
-    },
-    {
-      test: /\.html$/,
-      use: [{
-        loader: "html-loader"
-      }]
-    },
-    {
-      test: /\.css$/,
-      use: ["style-loader", "css-loader"]
-    },
-    {
-      test: /\.(jpe?g|png|gif|svg)$/i,
-      use: [{
-        loader: "url-loader",
-        options: {
-          limit: 30000,
-          name: "[name].[ext]"
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader"
         }
-      }]
-    }
+      },
+      {
+        test: /\.html$/,
+        use: [
+          {
+            loader: "html-loader"
+          }
+        ]
+      },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"]
+      },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        use: [
+          {
+            loader: "url-loader",
+            options: {
+              limit: 30000,
+              name: "[name].[ext]"
+            }
+          }
+        ]
+      }
     ]
   },
   plugins: [
     new HtmlWebPackPlugin({
       template: "./public/index.html",
       filename: "./index.html"
-    }),
+    })
   ],
 
   entry: {
     javascript: "./src/index.jsx",
     html: "./public/index.html"
   }
-}
+};

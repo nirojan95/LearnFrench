@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser");
 const MongoClient = require("mongodb").MongoClient;
 const ObjectId = require("mongodb").ObjectID;
 const sha1 = require("sha1");
+
 // Imports the Google Cloud client library
 const textToSpeech = require("@google-cloud/text-to-speech");
 
@@ -75,6 +76,7 @@ reloadMagic(app);
 app.use(cookieParser());
 app.use("/", express.static("build")); // Needed for the HTML and JS files
 app.use("/", express.static("public")); // Needed for local assets
+app.use("/", express.static("data")); // Needed for audio
 
 let generateid = () => {
   return Math.floor(Math.random() * 1000000000);
@@ -135,6 +137,46 @@ app.post("/getPractice", upload.none(), (req, res) => {
     }
     res.send(JSON.stringify({ success: true, words }));
   });
+});
+
+app.post("/textToSpeech", upload.none(), (req, res) => {
+  dbo
+    .collection("practice")
+    .find({})
+    .toArray((err, items) => {
+      if (err) {
+        console.log("err", err);
+        return;
+      }
+
+      let fWords = [];
+
+      items.forEach(item => {
+        item.words.forEach(word => {
+          fWords = [word.fWord, ...fWords];
+        });
+      });
+
+      console.log(fWords);
+
+      fWords.forEach(async word => {
+        // Creates a client
+        const client = new textToSpeech.TextToSpeechClient();
+
+        // Construct the request
+        const request = {
+          input: { text: word },
+          // Select the language and SSML Voice Gender (optional)
+          voice: { languageCode: "fr-CA", ssmlGender: "NEUTRAL" },
+          // Select the type of audio encoding
+          audioConfig: { audioEncoding: "MP3" }
+        };
+
+        // Performs the Text-to-Speech request
+        const [response] = await client.synthesizeSpeech(request);
+        fs.writeFileSync(`./data/${word}.mp3`, response.audioContent);
+      });
+    });
 });
 
 // Your endpoints go before this line
