@@ -4,6 +4,7 @@ import { Route, BrowserRouter, Link } from "react-router-dom";
 import Login from "./Login.jsx";
 import Signup from "./Signup.jsx";
 import Menu from "./Menu.jsx";
+import Practice from "./Practice.jsx";
 
 class UnconnectedApp extends Component {
   renderHomepage = () => {
@@ -26,6 +27,15 @@ class UnconnectedApp extends Component {
     return <Menu />;
   };
 
+  renderPractice = routerData => {
+    let practiceId = routerData.match.params.pid;
+    return (
+      <div>
+        <Practice id={practiceId} />
+      </div>
+    );
+  };
+
   render = () => {
     return (
       <BrowserRouter>
@@ -33,7 +43,11 @@ class UnconnectedApp extends Component {
         <Route exact={true} path="/login" component={this.renderLogin} />
         <Route exact={true} path="/signup" component={this.renderSignup} />
         <Route exact={true} path="/menu" component={this.renderMenu} />
-        <Route exact={true} path="/level/:lid" component={this.renderLevel} />
+        <Route
+          exact={true}
+          path="/practice/:pid"
+          component={this.renderPractice}
+        />
       </BrowserRouter>
     );
   };

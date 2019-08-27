@@ -1,0 +1,67 @@
+.practice-container {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* font-family: "B612 Mono", monospace; */
+  font-family: "IBM Plex Sans", sans-serif;
+}
+
+.flex {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin: 10px;
+  padding: 10px;
+}
+
+.flex-horizontal-center {
+  justify-content: center;
+}
+
+.flex-grid {
+  display: flex;
+}
+
+.col {
+  flex: 1;
+}
+
+.eng-word {
+  font-weight: 300;
+  color: rgb(58, 58, 58);
+}
+
+.fa-volume-up {
+  color: rgba(102, 102, 102, 0.507);
+  padding: 5px;
+}
+
+.fa-volume-up:hover {
+  color: rgba(56, 105, 238, 0.671);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.border-bottem {
+  border-bottom: rgba(145, 140, 140, 0.349) solid 1px;
+}
+
+.border {
+  border: rgba(122, 120, 120, 0.11) solid 1px;
+}
+
+.padding-10 {
+  padding: 10px;
+}
+
+.margin-top-10 {
+  margin-top: 10px;
+}
+
+.padding-bottom {
+  padding-bottom: 10px;
+}
