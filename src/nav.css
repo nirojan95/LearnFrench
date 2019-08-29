@@ -1,0 +1,142 @@
+nav {
+  background: #fdf5ae;
+  padding: 5px 20px;
+  /* font-family: "IBM Plex Sans", sans-serif; */
+  font-family: "B612 Mono", monospace;
+}
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+ul {
+  list-style-type: none;
+}
+a {
+  color: #f57979;
+  text-decoration: none;
+}
+.logo {
+  color: #f57979;
+  font-weight: 700;
+}
+
+a:hover {
+  color: #a75454;
+}
+.logo a:hover {
+  text-decoration: none;
+}
+.menu li {
+  font-size: 16px;
+  padding: 15px 5px;
+  white-space: nowrap;
+}
+.logo a,
+.toggle a {
+  font-size: 20px;
+  font-weight: 500px;
+}
+.button.secondary {
+  border-bottom: 1px rgb(68, 68, 68) solid;
+}
+
+/* Mobile menu */
+.menu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+.toggle {
+  order: 1;
+}
+.item.button {
+  order: 2;
+}
+.item {
+  width: 100%;
+  text-align: center;
+  order: 3;
+  display: none;
+}
+.item.active {
+  display: block;
+}
+
+.fas:hover {
+  cursor: pointer;
+}
+
+.sign-up-flex {
+  display: flex;
+}
+
+/* Tablet menu */
+@media all and (min-width: 600px) {
+  .menu {
+    justify-content: center;
+  }
+  .logo {
+    flex: 1;
+  }
+
+  .toggle {
+    flex: 1;
+    text-align: right;
+  }
+  .item.button {
+    width: auto;
+    order: 1;
+    display: block;
+  }
+  .toggle {
+    order: 2;
+  }
+  .button.secondary {
+    border: 0;
+  }
+  .button a {
+    padding: 7.5px 15px;
+  }
+  .button.secondary a {
+    color: #f57979;
+    background: transparent;
+  }
+  .button a:hover {
+    text-decoration: none;
+  }
+  .button a:hover {
+    background: #fdf5ae;
+    border-color: #f57979c5;
+  }
+  .button.secondary a:hover {
+    color: rgba(17, 17, 17, 0.712);
+  }
+}
+
+/* Desktop menu */
+@media all and (min-width: 900px) {
+  .item {
+    display: block;
+    width: auto;
+  }
+  .toggle {
+    display: none;
+  }
+  .logo {
+    order: 0;
+  }
+  .item {
+    order: 1;
+  }
+  .button {
+    order: 2;
+  }
+  .menu li {
+    padding: 15px 10px;
+  }
+  .menu li.button {
+    padding-right: 0;
+  }
+}

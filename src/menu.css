@@ -1,0 +1,15 @@
+.circle {
+  height: 30px;
+  width: 30px;
+  background: #fdf5ae;
+  border-radius: 50%;
+  display: inline-block;
+  text-align: center;
+  padding-top: 4px;
+  border: solid 1px #fa8181;
+}
+
+.circle:hover {
+  background: #fcf5bc;
+  color: #fc9696;
+}

@@ -31,7 +31,13 @@ class UnconnectedLogin extends Component {
     let body = JSON.parse(responseBody);
     if (!body.success) {
       alert("Not a valid Login!");
+      return;
     }
+    this.props.dispatch({
+      type: "login-success",
+      username: this.state.username
+    });
+    this.props.history.push("/");
   };
 
   render() {

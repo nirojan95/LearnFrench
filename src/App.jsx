@@ -6,18 +6,19 @@ import Signup from "./Signup.jsx";
 import Menu from "./Menu.jsx";
 import Practice from "./Practice.jsx";
 import Test from "./Test.jsx";
+import Nav from "./Nav.jsx";
 
 class UnconnectedApp extends Component {
   renderHomepage = () => {
     return (
       <div>
-        <Link to="/login">Login</Link>
+        <Nav></Nav>
       </div>
     );
   };
 
-  renderLogin = () => {
-    return <Login />;
+  renderLogin = props => {
+    return <Login history={props.history} />;
   };
 
   renderSignup = () => {
@@ -25,13 +26,19 @@ class UnconnectedApp extends Component {
   };
 
   renderMenu = () => {
-    return <Menu />;
+    return (
+      <div>
+        <Nav />
+        <Menu />
+      </div>
+    );
   };
 
   renderPractice = routerData => {
     let practiceId = routerData.match.params.pid;
     return (
       <div>
+        <Nav />
         <Practice id={practiceId} />
       </div>
     );

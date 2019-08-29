@@ -161,6 +161,12 @@ app.get("/textToSpeech", (req, res) => {
     });
 });
 
+app.get("/logout", (req, res) => {
+  let sid = req.cookies.sid;
+  delete sessions[sid];
+  res.send(JSON.stringify({ success: true }));
+});
+
 // Your endpoints go before this line
 
 app.all("/*", (req, res, next) => {
