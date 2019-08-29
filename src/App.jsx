@@ -5,6 +5,7 @@ import Login from "./Login.jsx";
 import Signup from "./Signup.jsx";
 import Menu from "./Menu.jsx";
 import Practice from "./Practice.jsx";
+import Test from "./Test.jsx";
 
 class UnconnectedApp extends Component {
   renderHomepage = () => {

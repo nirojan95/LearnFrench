@@ -6,6 +6,12 @@ class Examples extends Component {
     this.state = { examples: this.props.examples };
   }
 
+  soundHandler = example => {
+    let audio = new Audio(`/${example}.mp3`);
+    console.log(audio);
+    audio.play();
+  };
+
   render() {
     return (
       <div className="padding-10 margin-top-10">
@@ -14,7 +20,13 @@ class Examples extends Component {
             <div className="padding-10">
               <div className="flex-grid">
                 <div className="col text-center">
-                  <i class="fas fa-volume-up" />
+                  <span
+                    onClick={() =>
+                      this.soundHandler(example.f.replace("?", ""))
+                    }
+                  >
+                    <i class="fas fa-volume-up" />
+                  </span>
                 </div>
                 <div className="col">
                   <div>{example.f}</div>

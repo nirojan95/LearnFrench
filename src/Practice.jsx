@@ -19,7 +19,7 @@ class Practice extends Component {
     let responseBody = await response.text();
     let body = JSON.parse(responseBody);
     if (body.success) {
-      this.setState({ words: body.words.words });
+      this.setState({ words: body.words });
     }
   };
 

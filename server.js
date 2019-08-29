@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser");
 const MongoClient = require("mongodb").MongoClient;
 const ObjectId = require("mongodb").ObjectID;
 const sha1 = require("sha1");
+const testData = require("./data.js");
 
 // Imports the Google Cloud client library
 const textToSpeech = require("@google-cloud/text-to-speech");
@@ -16,54 +17,7 @@ const fs = require("fs");
 const util = require("util");
 
 sessions = {};
-let practice = {
-  id: 1,
-  words: [
-    {
-      fWord: "vraiment",
-      eWord: "really",
-      examples: [
-        { f: "Il a vraiment dit ça?", e: "He really said that?" },
-        {
-          f:
-            "Nous sommes vraiment désolé(e)s mais nous ne pouvons pas sortir ce soir.",
-          e: "We are really sorry, but you cannot go out tonight."
-        },
-        { f: "J'aime vraiment ce film!", e: "I really like this movie!" },
-        { f: "Je suis vraiment seul.", e: "I am really lonely." }
-      ]
-    },
-    {
-      fWord: "seul",
-      eWord: "alone, sole, single, lonely, only",
-      examples: [{ f: "Tu es seul.", e: "You are alone." }]
-    },
-    {
-      fWord: "fille",
-      eWord: "girl, daughter",
-      examples: [
-        { f: "J'ai deux filles.", e: "I have two daughters." },
-        {
-          f:
-            "Sa fille aide à l'organisation de la réunion, donc vous devriez mettre une chaise supplémentaire.",
-          e:
-            "His daughter is assisting with the reunion's organization, so you should set an extra seat."
-        },
-        {
-          f: "Comme toi, la fille est seule",
-          e: "Like you, the girl is alone."
-        }
-      ]
-    },
-    {
-      fWord: "devant",
-      eWord: "in front, ahead",
-      examples: [
-        { f: "Jacques est devant moi.", e: "Jacques is in front of me." }
-      ]
-    }
-  ]
-};
+
 let dbo = undefined;
 let url =
   "mongodb+srv://chuckedup:JAbSNA29hPYv8na@cluster0-jxjpp.mongodb.net/test?retryWrites=true&w=majority";
@@ -84,7 +38,7 @@ let generateid = () => {
 
 // Your endpoints go after this line
 app.get("/addData", (req, res) => {
-  dbo.collection("practice").insertOne(practice);
+  dbo.collection("data").insertOne(testData);
   res.send({ success: true });
 });
 
@@ -130,32 +84,57 @@ app.post("/signup", upload.none(), (req, res) => {
 
 app.post("/getPractice", upload.none(), (req, res) => {
   let id = Number(req.body.id);
-  dbo.collection("practice").findOne({ id }, (err, words) => {
+  dbo.collection("data").findOne({ id }, (err, item) => {
     if (err) {
       console.log("err: ", err);
+      res.send(JSON.stringify({ success: false }));
       return;
     }
-    res.send(JSON.stringify({ success: true, words }));
+    res.send(JSON.stringify({ success: true, words: item.words }));
   });
 });
 
-app.post("/textToSpeech", upload.none(), (req, res) => {
+app.post("/getTest", upload.none(), (req, res) => {
+  console.log("in getTest endpoint");
+  let id = Number(req.body.id);
+  dbo.collection("data").findOne({ id }, (err, item) => {
+    if (err) {
+      console.log("err: ", err);
+      res.send(JSON.stringify({ success: false }));
+      return;
+    }
+    res.send(JSON.stringify({ success: true, words: item.words }));
+  });
+});
+
+app.get("/textToSpeech", (req, res) => {
+  console.log("in /textToSpeech");
   dbo
-    .collection("practice")
+    .collection("data")
     .find({})
     .toArray((err, items) => {
       if (err) {
         console.log("err", err);
+        res.send(JSON.stringify({ success: false }));
         return;
       }
 
       let fWords = [];
 
-      items.forEach(item => {
-        item.words.forEach(word => {
-          fWords = [word.fWord, ...fWords];
-        });
-      });
+      // items.forEach(item => {
+      //   item.words.forEach(word => {
+      //     fWords = [word.fWord, ...fWords];
+      //   });
+      // });
+
+      // items.forEach(item => {
+      //   item.words.forEach(word => {
+      //     word.examples.forEach(example => {
+      //       fWords = [example.f, ...fWords];
+      //     });
+      //   });
+      // });
+      fWords = ["çava?"];
 
       console.log(fWords);
 
@@ -172,10 +151,13 @@ app.post("/textToSpeech", upload.none(), (req, res) => {
           audioConfig: { audioEncoding: "MP3" }
         };
 
+        word = word.replace("?", "");
+
         // Performs the Text-to-Speech request
         const [response] = await client.synthesizeSpeech(request);
         fs.writeFileSync(`./data/${word}.mp3`, response.audioContent);
       });
+      res.send(JSON.stringify({ success: true }));
     });
 });
 
