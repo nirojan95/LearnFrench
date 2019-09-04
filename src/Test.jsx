@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 let timer;
+let counter = 0;
 
 class Test extends Component {
   constructor(props) {
@@ -42,6 +43,20 @@ class Test extends Component {
       this.setState({ test });
       document.addEventListener("keydown", this.handleKeyPress);
     }
+  };
+
+  delay = (interval, cancellable) => {
+    let current = counter;
+    return new Promise((res, rej) => {
+      let f = () => {
+        if (cancellable && current !== counter) rej();
+        else res();
+      };
+      setTimeout(f, interval);
+    });
+  };
+  cancel = () => {
+    counter++;
   };
 
   handleKeyPress = e => {
@@ -93,8 +108,13 @@ class Test extends Component {
     }
   };
 
-  soundHandler = example => {
-    let audio = new Audio(`/${example}.mp3`);
+  soundHandler = (example, lang) => {
+    let audio = undefined;
+    if (lang === "eng") {
+      audio = new Audio(`/eng-${example}.mp3`);
+    } else {
+      audio = new Audio(`/${example}.mp3`);
+    }
     console.log(audio);
     audio.play();
   };
@@ -136,7 +156,10 @@ class Test extends Component {
     this.setState({
       engWord: this.state.gameArray[this.state.currentWordIndex].eng
     });
-    this.soundHandler(this.state.gameArray[this.state.currentWordIndex].eng);
+    this.soundHandler(
+      this.state.gameArray[this.state.currentWordIndex].eng,
+      "eng"
+    );
     setTimeout(() => {
       this.soundHandler(this.state.gameArray[this.state.currentWordIndex].fr);
       timer = setTimeout(() => {

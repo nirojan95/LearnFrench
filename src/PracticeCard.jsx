@@ -20,7 +20,7 @@ class PracticeCard extends Component {
 
   render() {
     return (
-      <div className="flex flex-horizontal-center">
+      <div className="flex flex-column flex-horizontal-center">
         <div className="flex-grid border-bottem padding-bottom">
           <div className="col text-center">
             <span onClick={this.soundHandler}>

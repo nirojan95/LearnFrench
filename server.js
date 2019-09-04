@@ -86,11 +86,18 @@ app.get("/menu", (req, res) => {
   dbo
     .collection("data")
     .find({})
-    .toArray();
+    .toArray((err, data) => {
+      if (err) {
+        console.log("err: ", err);
+        return;
+      }
+      console.log(data);
+      res.send(JSON.stringify({ success: true, data }));
+    });
 });
 
 app.post("/getPractice", upload.none(), (req, res) => {
-  let id = Number(req.body.id);
+  let id = req.body.id;
   dbo.collection("data").findOne({ _id: ObjectId(id) }, (err, item) => {
     if (err) {
       console.log("err: ", err);
@@ -103,8 +110,8 @@ app.post("/getPractice", upload.none(), (req, res) => {
 
 app.post("/getTest", upload.none(), (req, res) => {
   console.log("in getTest endpoint");
-  let id = Number(req.body.id);
-  dbo.collection("data").findOne({ id }, (err, item) => {
+  let id = req.body.id;
+  dbo.collection("data").findOne({ _id: ObjectId(id) }, (err, item) => {
     if (err) {
       console.log("err: ", err);
       res.send(JSON.stringify({ success: false }));
@@ -127,23 +134,78 @@ app.get("/textToSpeech", (req, res) => {
       }
 
       let fWords = [];
+      let eWords = [];
+      let test = [];
+      let f = [];
+      let e = [];
+      items.forEach(item => {
+        item.words.forEach(word => {
+          fWords = [word.fWord, ...fWords];
+        });
+      });
+      items.forEach(item => {
+        item.words.forEach(word => {
+          eWords = [word.eWord, ...eWords];
+        });
+      });
 
-      // items.forEach(item => {
-      //   item.words.forEach(word => {
-      //     fWords = [word.fWord, ...fWords];
-      //   });
-      // });
+      items.forEach(item => {
+        item.words.forEach(word => {
+          word.examples.forEach(example => {
+            f = [example.f, ...f];
+          });
+        });
+      });
 
-      // items.forEach(item => {
-      //   item.words.forEach(word => {
-      //     word.examples.forEach(example => {
-      //       fWords = [example.f, ...fWords];
-      //     });
-      //   });
-      // });
-      fWords = ["çava?"];
+      items.forEach(item => {
+        item.words.forEach(word => {
+          word.examples.forEach(example => {
+            e = [example.e, ...e];
+          });
+        });
+      });
+
+      items.forEach(item => {
+        item.words.forEach(word => {
+          word.test.forEach(example => {
+            test = [example, ...test];
+          });
+        });
+      });
 
       console.log(fWords);
+      console.log(eWords);
+      console.log(e);
+      console.log(f);
+      console.log(test);
+
+      eWords.forEach(async word => {
+        // Creates a client
+        const client = new textToSpeech.TextToSpeechClient();
+
+        // Construct the request
+        const request = {
+          audioConfig: {
+            audioEncoding: "LINEAR16",
+            pitch: -0.4,
+            speakingRate: 1.23
+          },
+          input: { text: word },
+          // Select the language and SSML Voice Gender (optional)
+          voice: {
+            languageCode: "en-US",
+            name: "en-US-Wavenet-D"
+          },
+          // Select the type of audio encoding
+          audioConfig: { audioEncoding: "MP3" }
+        };
+
+        word = word.replace("?", "");
+
+        // Performs the Text-to-Speech request
+        const [response] = await client.synthesizeSpeech(request);
+        fs.writeFileSync(`./data/eng-${word}.mp3`, response.audioContent);
+      });
 
       fWords.forEach(async word => {
         // Creates a client
@@ -151,9 +213,17 @@ app.get("/textToSpeech", (req, res) => {
 
         // Construct the request
         const request = {
+          audioConfig: {
+            audioEncoding: "LINEAR16",
+            pitch: 1.6,
+            speakingRate: 1.07
+          },
           input: { text: word },
           // Select the language and SSML Voice Gender (optional)
-          voice: { languageCode: "fr-CA", ssmlGender: "NEUTRAL" },
+          voice: {
+            languageCode: "fr-FR",
+            name: "fr-FR-Wavenet-A"
+          },
           // Select the type of audio encoding
           audioConfig: { audioEncoding: "MP3" }
         };
@@ -164,6 +234,63 @@ app.get("/textToSpeech", (req, res) => {
         const [response] = await client.synthesizeSpeech(request);
         fs.writeFileSync(`./data/${word}.mp3`, response.audioContent);
       });
+
+      f.forEach(async word => {
+        // Creates a client
+        const client = new textToSpeech.TextToSpeechClient();
+
+        // Construct the request
+        const request = {
+          audioConfig: {
+            audioEncoding: "LINEAR16",
+            pitch: 1.6,
+            speakingRate: 1.07
+          },
+          input: { text: word },
+          // Select the language and SSML Voice Gender (optional)
+          voice: {
+            languageCode: "fr-FR",
+            name: "fr-FR-Wavenet-A"
+          },
+          // Select the type of audio encoding
+          audioConfig: { audioEncoding: "MP3" }
+        };
+
+        word = word.replace("?", "");
+
+        // Performs the Text-to-Speech request
+        const [response] = await client.synthesizeSpeech(request);
+        fs.writeFileSync(`./data/${word}.mp3`, response.audioContent);
+      });
+
+      test.forEach(async word => {
+        // Creates a client
+        const client = new textToSpeech.TextToSpeechClient();
+
+        // Construct the request
+        const request = {
+          audioConfig: {
+            audioEncoding: "LINEAR16",
+            pitch: 1.6,
+            speakingRate: 1.07
+          },
+          input: { text: word },
+          // Select the language and SSML Voice Gender (optional)
+          voice: {
+            languageCode: "fr-FR",
+            name: "fr-FR-Wavenet-A"
+          },
+          // Select the type of audio encoding
+          audioConfig: { audioEncoding: "MP3" }
+        };
+
+        word = word.replace("?", "");
+
+        // Performs the Text-to-Speech request
+        const [response] = await client.synthesizeSpeech(request);
+        fs.writeFileSync(`./data/${word}.mp3`, response.audioContent);
+      });
+
       res.send(JSON.stringify({ success: true }));
     });
 });

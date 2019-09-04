@@ -7,9 +7,11 @@
   text-align: center;
   padding-top: 4px;
   border: solid 1px #fa8181;
+  margin: 5px;
 }
 
 .circle:hover {
   background: #fcf5bc;
   color: #fc9696;
+  cursor: pointer;
 }

@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 import PracticeCard from "./PracticeCard.jsx";
 
-class Practice extends Component {
+class UnconnectedPractice extends Component {
   constructor(props) {
     super(props);
     this.state = { words: [] };
@@ -24,17 +25,23 @@ class Practice extends Component {
   };
 
   render() {
-    console.log(this.state.words);
+    console.log(this.props.level);
 
     return (
       <div className="practice-container">
         {this.state.words.map(word => {
           return <PracticeCard word={word} />;
         })}
-        <Link to="/test/1">Test Your Skills</Link>
+        <Link to={`/test/${this.props.level._id}`}>Test Your Skills</Link>
       </div>
     );
   }
 }
+
+let mapStateToProps = state => {
+  return { level: state.level };
+};
+
+let Practice = connect(mapStateToProps)(withRouter(UnconnectedPractice));
 
 export default Practice;
