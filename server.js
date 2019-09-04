@@ -82,9 +82,16 @@ app.post("/signup", upload.none(), (req, res) => {
   });
 });
 
+app.get("/menu", (req, res) => {
+  dbo
+    .collection("data")
+    .find({})
+    .toArray();
+});
+
 app.post("/getPractice", upload.none(), (req, res) => {
   let id = Number(req.body.id);
-  dbo.collection("data").findOne({ id }, (err, item) => {
+  dbo.collection("data").findOne({ _id: ObjectId(id) }, (err, item) => {
     if (err) {
       console.log("err: ", err);
       res.send(JSON.stringify({ success: false }));

@@ -6,9 +6,10 @@ axios
     "https://www.frenchpod101.com/lesson/business-french-for-beginners-1-introducing-yourself-in-a-business-meeting/?lp=151"
   )
   .then(response => {
+    console.log("in response");
     // Load the web page source code into a cheerio instance
     const $ = cheerio.load(response.data);
-
+    console.log($);
     // The pre.highlight.shell CSS selector matches all `pre` elements
     // that have both the `highlight` and `shell` class
     const urlElems = $("pre.highlight.shell");
