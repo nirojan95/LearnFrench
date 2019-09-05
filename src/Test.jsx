@@ -1,9 +1,11 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 
 let timer;
 let counter = 0;
 
-class Test extends Component {
+class UnconnectedTest extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -14,7 +16,7 @@ class Test extends Component {
       currentKey: "none pressed yet",
       won: false,
       lost: false,
-      engWord: "Welcome to the Game",
+      engWord: "Press Space to Start.",
       gameLength: 0,
       currentWordIndex: 0,
       inSession: false,
@@ -22,7 +24,11 @@ class Test extends Component {
       userResponse: undefined
     };
   }
-  componentDidMount = async () => {
+  componentDidMount = () => {
+    this.preGame();
+  };
+
+  preGame = async () => {
     let data = new FormData();
     data.append("id", this.props.id);
     let response = await fetch("/getTest", {
@@ -59,12 +65,13 @@ class Test extends Component {
     counter++;
   };
 
-  handleKeyPress = e => {
+  handleKeyPress = async e => {
     this.setState({ currentKey: e.keyCode });
-    if (e.keyCode === 27) {
-      console.log("You just pressed Escape!");
-    }
     if (e.keyCode === 32 && !this.state.inSession) {
+      if (this.state.won) {
+        this.props.history.push("/menu");
+        return;
+      }
       this.setState({ createGameArray: true });
     }
     if (e.keyCode === 70 && this.state.inSession) {
@@ -83,8 +90,11 @@ class Test extends Component {
           wonRound: true,
           currentWordIndex: this.state.currentWordIndex + 1
         });
-        clearTimeout(timer);
-        setTimeout(this.nextWord, 1000);
+        this.cancel();
+        // clearTimeout(timer);
+        // setTimeout(this.nextWord, 1000);
+        await this.delay(1000, false);
+        this.nextWord();
       } else {
         this.setState({ lost: true });
       }
@@ -100,8 +110,11 @@ class Test extends Component {
           wonRound: true,
           currentWordIndex: this.state.currentWordIndex + 1
         });
-        clearTimeout(timer);
-        setTimeout(this.nextWord, 1000);
+        // clearTimeout(timer);
+        // setTimeout(this.nextWord, 1000);
+        this.cancel();
+        await this.delay(1000, false);
+        this.nextWord();
       } else {
         this.setState({ lost: true });
       }
@@ -148,7 +161,8 @@ class Test extends Component {
     });
   };
 
-  nextWord = () => {
+  nextWord = async () => {
+    this.setState({ wonRound: false });
     if (this.state.currentWordIndex === this.state.gameLength) {
       this.setState({ won: true });
       return;
@@ -160,31 +174,42 @@ class Test extends Component {
       this.state.gameArray[this.state.currentWordIndex].eng,
       "eng"
     );
-    setTimeout(() => {
-      this.soundHandler(this.state.gameArray[this.state.currentWordIndex].fr);
-      timer = setTimeout(() => {
-        if (this.state.wonRound) {
-          this.setState({ wonRound: false });
-          console.log("roundWon");
-        } else {
-          this.setState({ lost: true });
-        }
-      }, 5000);
-    }, 1250);
+    await this.delay(1250, false);
+    this.soundHandler(this.state.gameArray[this.state.currentWordIndex].fr);
+    await this.delay(3000, true);
+    if (this.state.wonRound) {
+      this.setState({ wonRound: false });
+      console.log("roundWon");
+    } else {
+      this.setState({ lost: true });
+    }
+    // setTimeout(() => {
+    //   this.soundHandler(this.state.gameArray[this.state.currentWordIndex].fr);
+    //   timer = setTimeout(() => {
+    //     if (this.state.wonRound) {
+    //       this.setState({ wonRound: false });
+    //       console.log("roundWon");
+    //     } else {
+    //       this.setState({ lost: true });
+    //     }
+    //   }, 5000);
+    // }, 1250);
   };
 
   startGame = () => {
     console.log("in start game");
-    setTimeout(this.nextWord, 500);
+    this.delay(500, false);
+    this.nextWord();
+    // setTimeout(this.nextWord, 500);
   };
 
   render() {
-    console.log(this.state.won);
-    // console.log(this.state.test);
+    console.log("won: ", this.state.won);
+    console.log("test: ", this.state.test);
     // console.log("current key: ", this.state.currentKey);
     // console.log("createGameArray: ", this.state.createGameArray);
-    console.log(this.state.gameLength);
-    console.log(this.state.currentWordIndex);
+    console.log("gameLength: ", this.state.gameLength);
+    console.log("currentWordIndex: ", this.state.currentWordIndex);
     console.log("gameArray: ", this.state.gameArray);
     if (this.state.createGameArray) {
       this.createGame();
@@ -201,16 +226,25 @@ class Test extends Component {
       this.setState({
         lost: false,
         inSession: false,
-        engWord: "Press space to restart game!"
+        engWord: "Press space to restart game!",
+        test: [],
+        gameArray: [],
+        createGameArray: false,
+        startGame: false,
+        currentKey: "none pressed yet",
+        won: false,
+        gameLength: 0,
+        currentWordIndex: 0,
+        wonRound: false,
+        userResponse: undefined
       });
+      this.preGame();
     }
 
     if (this.state.won) {
-      alert("Chapter Complete");
       this.setState({
-        won: false,
         inSession: false,
-        engWord: "Level Complete"
+        engWord: "Level Complete! Press Space to return to Menu."
       });
     }
 
@@ -226,5 +260,7 @@ class Test extends Component {
     );
   }
 }
+
+let Test = connect()(withRouter(UnconnectedTest));
 
 export default Test;
