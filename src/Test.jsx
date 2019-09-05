@@ -249,12 +249,16 @@ class UnconnectedTest extends Component {
     }
 
     return (
-      <div className="border practice-container">
-        <div className="col border padding">
-          <div>{this.state.engWord}</div>
-        </div>
-        <div className="col border padding">
-          <div>Press F key for correct word and J key for incorrect word.</div>
+      <div className="border practice-container flex-horizontal-center">
+        <div className="border practice-container padding-top-bottom margin-top-10">
+          <div className="col border padding">
+            <div>{this.state.engWord}</div>
+          </div>
+          <div className="col border padding">
+            <div>
+              Press F key for correct word and J key for incorrect word.
+            </div>
+          </div>
         </div>
       </div>
     );

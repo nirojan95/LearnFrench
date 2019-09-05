@@ -9,10 +9,34 @@ import Test from "./Test.jsx";
 import Nav from "./Nav.jsx";
 
 class UnconnectedApp extends Component {
-  renderHomepage = () => {
+  renderHomepage = props => {
     return (
       <div>
-        <Nav></Nav>
+        {/* <Nav></Nav> */}
+        <div className="flex-horizontal-center display-flex">
+          <div className=" display-flex margin-top-10 width-90  border-bold z-index-1 postion-relative">
+            <h1>Learn French</h1>
+            <span className="signup-text-home">
+              <span
+                className="signup-btn"
+                onClick={() => {
+                  props.history.push("/signup");
+                }}
+              >
+                Signup
+              </span>{" "}
+              and Start Learning Today!
+            </span>
+            <span>
+              <Login history={props.history} />
+            </span>
+            <img
+              className="opacity height-800 z-index-2"
+              src="/painting.jpg"
+              width="100%"
+            ></img>
+          </div>
+        </div>
       </div>
     );
   };
@@ -48,6 +72,7 @@ class UnconnectedApp extends Component {
     let testId = routerData.match.params.tid;
     return (
       <div>
+        <Nav />
         <Test id={testId} />
       </div>
     );

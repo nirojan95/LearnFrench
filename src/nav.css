@@ -1,5 +1,6 @@
 nav {
   background: #fdf5ae;
+  /* background: #698a80da; */
   padding: 5px 20px;
   /* font-family: "IBM Plex Sans", sans-serif; */
   font-family: "B612 Mono", monospace;
@@ -14,10 +15,12 @@ ul {
 }
 a {
   color: #f57979;
+  /* color: #f59a7ee3; */
   text-decoration: none;
 }
 .logo {
   color: #f57979;
+  /* color: #eb6a43; */
   font-weight: 700;
 }
 
