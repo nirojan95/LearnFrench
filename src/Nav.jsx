@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import "./nav.css";
 
@@ -11,6 +11,7 @@ class UnconnectedNav extends Component {
   logoutHandler = () => {
     this.props.dispatch({ type: "logout" });
     fetch("/logout");
+    this.props.history.push("/");
   };
 
   toggleMenu = () => {
@@ -58,16 +59,7 @@ class UnconnectedNav extends Component {
                   this.state.active ? "item button active" : "item button"
                 }
               >
-                <Link to="/login">Signin</Link>
-              </li>
-              <li
-                className={
-                  this.state.active
-                    ? "item button secondary active"
-                    : "item button secondary"
-                }
-              >
-                <Link to="/signup">Signup</Link>
+                <Link to="/">Signin</Link>
               </li>
             </span>
           )}
@@ -86,6 +78,6 @@ let mapStateToProps = state => {
   return { loginStatus: state.loginStatus };
 };
 
-let Nav = connect(mapStateToProps)(UnconnectedNav);
+let Nav = connect(mapStateToProps)(withRouter(UnconnectedNav));
 
 export default Nav;

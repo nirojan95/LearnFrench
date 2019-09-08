@@ -1,36 +1,162 @@
-const cheerio = require("cheerio");
-const axios = require("axios");
+const puppeteer = require("puppeteer");
+const MongoClient = require("mongodb").MongoClient;
+let CREDS = require("./cred.js");
+// const Apify = require("apify");
+// const url = process.argv[2];
+// use above so you can enter "node scraper.js url" into the terminal
 
-axios
-  .get(
-    "https://www.frenchpod101.com/lesson/business-french-for-beginners-1-introducing-yourself-in-a-business-meeting/?lp=151"
-  )
-  .then(response => {
-    console.log("in response");
-    // Load the web page source code into a cheerio instance
-    const $ = cheerio.load(response.data);
-    console.log($);
-    // The pre.highlight.shell CSS selector matches all `pre` elements
-    // that have both the `highlight` and `shell` class
-    const urlElems = $("pre.highlight.shell");
+let dbo = undefined;
+let url =
+  "mongodb+srv://chuckedup:JAbSNA29hPYv8na@cluster0-jxjpp.mongodb.net/test?retryWrites=true&w=majority";
+MongoClient.connect(url, { useNewUrlParser: true }, (err, db) => {
+  dbo = db.db("LearnFrench");
+});
 
-    // We now loop through all the elements found
-    for (let i = 0; i < urlElems.length; i++) {
-      // Since the URL is within the span element, we can use the find method
-      // To get all span elements with the `s1` class that are contained inside the
-      // pre element. We select the first such element we find (since we have seen that the first span
-      // element contains the URL)
-      const urlSpan = $(urlElems[i]).find("span[lang=fr]")[0];
+// const url = "https://google.com";
+// if (!url) {
+//   throw "Please provide a URL as the first argument";
+// }
+// async function run() {
+//   const browser = await puppeteer.launch();
+//   const page = await browser.newPage();
+//   await page.goto(url);
+//   await page.screenshot({ path: "screenshot.png" });
+//   browser.close();
+// }
+// run();
+// Apify.main(async () => {
+//     const input = await Apify.getValue('INPUT');
+//     const browser = await Apify.launchPuppeteer();
+//     const page = await browser.newPage();
+//     await page.goto('https://facebook.com');
+//     // Login
+//     await page.type('#email', input.username);
+//     await page.type('#pass', input.password);
+//     await page.click('#loginbutton input');
+//     await page.waitForNavigation();
+//     // Get cookies
+//     const cookies = await page.cookies();
+//     // Use cookies in other tab or browser
+//     const page2 = await browser.newPage();
+//     await page2.setCookie(...cookies);
+//     await page2.goto('https://facebook.com'); // Opens page as logged user
+//     await browser.close();
+//     console.log('Done.');
+// });
+let delay = interval => new Promise(res => setTimeout(res, interval));
+async function main() {
+  const browser = await puppeteer.launch({ headless: false });
+  const page = await browser.newPage();
+  await page.setViewport({ width: 1200, height: 720 });
+  await page.goto(
+    "https://www.frenchpod101.com/lesson/business-french-for-beginners-3-describing-your-profession-in-french/?lp=151",
+    { waitUntil: "networkidle0" }
+  ); // wait until page load
+  await page.mouse.click(0, 0);
+  await page.hover("div.dashbar-a__block--sign-in.js-dashbar-a-nav");
+  //await delay(500)
+  await page.waitFor("form#header_signing input[type=text]");
+  await delay(2000);
+  console.log("first delay done");
+  // await page.mouse.click("input[name='amember_login']");
+  //await delay(2000)
+  console.log("second delay done");
+  await page.type("input[name='amember_login']", CREDS.username);
+  await page.type("form#header_signing input[type=password]", CREDS.password);
+  // // click and wait for navigation
+  await Promise.all([
+    page.click(".r101-button-30--f"),
+    page.waitForNavigation({ waitUntil: "networkidle0" })
+  ]);
+  await delay(2000);
 
-      // We proceed, only if the element exists
-      if (urlSpan) {
-        // We wrap the span in `$` to create another cheerio instance of only the span
-        // and use the `text` method to get only the text (ignoring the HTML)
-        // of the span element
-        const urlText = $(urlSpan).text();
+  const frenchWords = await page.evaluate(() =>
+    Array.from(
+      document.querySelectorAll(
+        "span[lang='fr']:not(.lsn3-lesson-vocabulary__term)"
+      )
+    ).map(word => word.innerText)
+  );
 
-        // We then print the text on to the console
-        console.log(urlText);
-      }
+  const englishWords = await page.evaluate(() =>
+    Array.from(document.querySelectorAll(".lsn3-lesson-vocabulary__definition"))
+      .map(word => word.innerText)
+      .filter(word => !word.includes("."))
+      .filter(word => !word.includes("?"))
+      .filter(word => !word.includes("!"))
+  );
+
+  let data = [];
+  console.log("before french Examples");
+  let frenchExamples = await page.evaluate(() =>
+    Array.from(
+      document.querySelectorAll("span.lsn3-lesson-vocabulary__term table")
+    ).map(table =>
+      Array.from(table.querySelectorAll("span[lang='fr']")).map(
+        word => word.innerText
+      )
+    )
+  );
+
+  let englishExamples = await page.evaluate(() =>
+    Array.from(
+      document.querySelectorAll("span.lsn3-lesson-vocabulary__term table")
+    ).map(table =>
+      Array.from(
+        table.querySelectorAll("span.lsn3-lesson-vocabulary__definition")
+      ).map(word => word.innerText)
+    )
+  );
+  // #lsn3
+  for (i = 0; i < frenchWords.length; i++) {
+    let fWord = frenchWords[i];
+    let eWord = englishWords[i];
+    // let f = await page.evaluate(() =>
+    //   Array.from(
+    //     document.querySelectorAll("span.lsn3-lesson-vocabulary__term table")
+    //   ).map(table =>
+    //     Array.from(table.querySelectorAll("span[lang='fr']")).map(
+    //       word => word.innerText
+    //     )
+    //   )
+    // );
+    let examples = [];
+    for (j = 0; j < frenchExamples[i].length; j++) {
+      examples = [
+        { f: frenchExamples[i][j], e: englishExamples[i][j] },
+        ...examples
+      ];
     }
-  });
+
+    // let examples = { f: frenchExamples[i], e: englishExamples[i] };
+    let word = { fWord, eWord, examples };
+    data = [word, ...data];
+  }
+  data = data.reverse();
+  data = { words: data };
+
+  //   console.log(englishExamples);
+  //   console.log(frenchExamples);
+  //   console.log(frenchWords);
+  //   console.log(englishWords);
+  console.log(data);
+  //   dbo.collection("data").insertOne(data);
+}
+// async function main() {
+//   const browser = await puppeteer.launch({ headless: false });
+//   const page = await browser.newPage();
+//   await page.setViewport({ width: 1200, height: 720 });
+//   await page.goto("https://www.facebook.com", { waitUntil: "networkidle0" }); // wait until page load
+//   await page.type("input#email", CREDS.username);
+//   await page.type("input#pass", CREDS.password);
+//   // click and wait for navigation
+//   await Promise.all([
+//     page.click("form#login_form input[type=submit]"),
+//     page.waitForNavigation({ waitUntil: "networkidle0" })
+//   ]);
+// }
+main();
+
+// https://www.frenchpod101.com/lesson/business-french-for-beginners-1-introducing-yourself-in-a-business-meeting/?lp=151
+// https://www.frenchpod101.com/lesson/business-french-for-beginners-2-introducing-your-new-colleague/?lp=151
+// https://www.frenchpod101.com/lesson/business-french-for-beginners-3-describing-your-profession-in-french/?lp=151

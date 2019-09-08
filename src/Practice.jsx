@@ -32,7 +32,9 @@ class UnconnectedPractice extends Component {
         {this.state.words.map(word => {
           return <PracticeCard word={word} />;
         })}
-        <Link to={`/test/${this.props.level._id}`}>Test Your Skills</Link>
+        <Link className="color-red" to={`/test/${this.props.id}`}>
+          Test Your Skills
+        </Link>
       </div>
     );
   }

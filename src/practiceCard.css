@@ -23,6 +23,10 @@
   flex-direction: column;
 }
 
+.flex-justify-right {
+  justify-content: flex-end;
+}
+
 .flex-horizontal-center {
   justify-content: center;
   display: flex;
@@ -72,7 +76,20 @@
 }
 
 .border {
-  border: rgba(122, 120, 120, 0.11) solid 1px;
+  border: rgba(133, 133, 133, 0.267) solid 1px;
+}
+
+.border:hover {
+  border: rgba(133, 133, 133, 0.267) solid 1px;
+  box-shadow: 0 0 5px rgba(112, 112, 112, 0.486);
+}
+
+.margin-right {
+  margin-right: 100px;
+}
+
+.margin-top-420 {
+  margin-top: 420px;
 }
 
 .padding-10 {
@@ -119,7 +136,7 @@
 
 h1 {
   color: #6e0303;
-  padding-top: 250px;
+  padding-top: 275px;
   padding-left: 150px;
   font-family: "Cinzel", serif;
   position: absolute;
@@ -129,7 +146,7 @@ h1 {
 
 .signup-text-home {
   color: #6e0303;
-  padding-top: 330px;
+  padding-top: 355px;
   padding-left: 160px;
   font-family: "Cinzel", serif;
   position: absolute;
@@ -145,4 +162,59 @@ h1 {
 .signup-btn:hover {
   color: #a80404b9;
   cursor: pointer;
+}
+
+.color-red {
+  color: #e65f40;
+}
+
+.menu-button {
+  background-color: #e65f40;
+  border: 3px solid #620a739c;
+  width: 100px;
+  text-align: center;
+  border-radius: 5px;
+  font-size: 25px;
+  padding: 10px 0;
+}
+
+.menu-button:hover {
+  border: 3px solid #620a7393;
+  background-color: #ee8067;
+  cursor: pointer;
+}
+
+.noto-sans {
+  font-family: roboto, "Noto Sans Myanmar UI", arial, sans-serif;
+}
+
+.margin-top-50 {
+  margin-top: 50px;
+}
+
+.font-color-grey {
+  color: rgba(148, 147, 147, 0.671);
+}
+
+.border-red {
+  border: rgba(238, 79, 79, 0.808) solid 1px;
+  box-shadow: 0 0 5px rgb(240, 115, 115);
+}
+
+.border-green {
+  border: rgba(127, 240, 117, 0.753) solid 1px;
+  box-shadow: 0 0 5px rgb(115, 240, 126);
+}
+
+.overflow-visible {
+  overflow-x: auto;
+  width: 30%;
+  text-align: center;
+}
+
+.height-500 {
+  height: 600px;
+}
+.padding-bottom-100 {
+  padding: 250px 0px;
 }

@@ -15,3 +15,21 @@
   color: #fc9696;
   cursor: pointer;
 }
+
+.circle-completed {
+  height: 30px;
+  width: 30px;
+  background: #b7fdae;
+  border-radius: 50%;
+  display: inline-block;
+  text-align: center;
+  padding-top: 4px;
+  border: solid 1px #fa8181;
+  margin: 5px;
+}
+
+.circle-completed:hover {
+  background: #b7fdae;
+  color: #fc9696;
+  cursor: pointer;
+}

@@ -58,11 +58,23 @@ app.post("/login", upload.none(), (req, res) => {
       let sid = generateid();
       sessions[sid] = username;
       res.cookie("sid", sid);
+      let cookies = req.cookies.sid;
+      console.log(cookies);
       res.send(JSON.stringify({ success: true }));
       return;
     }
     res.send(JSON.stringify({ success: false }));
   });
+});
+
+app.get("/checkLogin", (req, res) => {
+  console.log("in checkLogin");
+  let sid = req.cookies.sid;
+  let username = sessions[sid];
+  if (username !== undefined) {
+    res.send({ success: true, username });
+    return;
+  }
 });
 
 app.post("/signup", upload.none(), (req, res) => {
@@ -82,7 +94,9 @@ app.post("/signup", upload.none(), (req, res) => {
   });
 });
 
-app.get("/menu", (req, res) => {
+app.get("/getMenu", (req, res) => {
+  let sid = req.cookies.sid;
+  let username = sessions[sid];
   dbo
     .collection("data")
     .find({})
@@ -91,8 +105,19 @@ app.get("/menu", (req, res) => {
         console.log("err: ", err);
         return;
       }
-      console.log(data);
-      res.send(JSON.stringify({ success: true, data }));
+      dbo.collection("users").findOne({ username }, (err, user) => {
+        if (err) {
+          console.log("err: ", err);
+          return;
+        }
+        if (user !== null) {
+          console.log(user);
+          let levelsCompleted = user.levelsCompleted;
+          res.send(JSON.stringify({ success: true, data, levelsCompleted }));
+          return;
+        }
+        res.send(JSON.stringify({ success: true, data }));
+      });
     });
 });
 
@@ -111,6 +136,7 @@ app.post("/getPractice", upload.none(), (req, res) => {
 app.post("/getTest", upload.none(), (req, res) => {
   console.log("in getTest endpoint");
   let id = req.body.id;
+  console.log(id);
   dbo.collection("data").findOne({ _id: ObjectId(id) }, (err, item) => {
     if (err) {
       console.log("err: ", err);
@@ -299,6 +325,25 @@ app.get("/logout", (req, res) => {
   let sid = req.cookies.sid;
   delete sessions[sid];
   res.send(JSON.stringify({ success: true }));
+});
+
+app.post("/updateUserInfo", upload.none(), (req, res) => {
+  let sid = req.cookies.sid;
+  let username = sessions[sid];
+  let id = req.body.id;
+  dbo
+    .collection("users")
+    .updateOne(
+      { username },
+      { $addToSet: { levelsCompleted: id } },
+      (err, item) => {
+        if (err) {
+          console.log("err: ", err);
+          return;
+        }
+        res.send(JSON.stringify({ success: true }));
+      }
+    );
 });
 
 // Your endpoints go before this line

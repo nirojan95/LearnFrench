@@ -9,6 +9,18 @@ import Test from "./Test.jsx";
 import Nav from "./Nav.jsx";
 
 class UnconnectedApp extends Component {
+  componentWillMount = async () => {
+    let response = await fetch("/checkLogin");
+    let responseBody = await response.text();
+    let body = JSON.parse(responseBody);
+    if (body.success) {
+      this.props.dispatch({
+        type: "login-success",
+        username: body.username
+      });
+    }
+  };
+
   renderHomepage = props => {
     return (
       <div>
@@ -100,6 +112,10 @@ class UnconnectedApp extends Component {
   };
 }
 
-let App = connect()(UnconnectedApp);
+let mapStateToProps = state => {
+  return { loginStatus: state.loginStatus };
+};
+
+let App = connect(mapStateToProps)(UnconnectedApp);
 
 export default App;

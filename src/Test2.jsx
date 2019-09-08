@@ -5,11 +5,10 @@ import { connect } from "react-redux";
 let timer;
 let counter = 0;
 
-class UnconnectedTest extends Component {
+class UnconnectedTest2 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      _id: undefined,
       test: [],
       gameArray: [],
       createGameArray: false,
@@ -22,8 +21,7 @@ class UnconnectedTest extends Component {
       currentWordIndex: 0,
       inSession: false,
       wonRound: false,
-      userResponse: undefined,
-      borderColor: 0
+      userResponse: undefined
     };
   }
   componentDidMount = () => {
@@ -48,7 +46,7 @@ class UnconnectedTest extends Component {
           ...test
         ];
       });
-      this.setState({ test, _id: this.props.id });
+      this.setState({ test });
       document.addEventListener("keydown", this.handleKeyPress);
     }
   };
@@ -70,13 +68,11 @@ class UnconnectedTest extends Component {
   handleKeyPress = async e => {
     this.setState({ currentKey: e.keyCode });
     if (e.keyCode === 32 && !this.state.inSession) {
-      if (
-        this.state.engWord === "Level Complete! Press Space to return to Menu."
-      ) {
+      if (this.state.won) {
         this.props.history.push("/menu");
         return;
       }
-      this.setState({ createGameArray: true, borderColor: 0 });
+      this.setState({ createGameArray: true });
     }
     if (e.keyCode === 70 && this.state.inSession) {
       console.log("in f key");
@@ -92,17 +88,15 @@ class UnconnectedTest extends Component {
         this.setState({
           userResponse: undefined,
           wonRound: true,
-          currentWordIndex: this.state.currentWordIndex + 1,
-          borderColor: 1
+          currentWordIndex: this.state.currentWordIndex + 1
         });
         this.cancel();
         // clearTimeout(timer);
         // setTimeout(this.nextWord, 1000);
         await this.delay(1000, false);
-        this.setState({ borderColor: 0 });
         this.nextWord();
       } else {
-        this.setState({ lost: true, borderColor: 2 });
+        this.setState({ lost: true });
       }
     }
     if (e.keyCode === 74 && this.state.inSession) {
@@ -114,17 +108,15 @@ class UnconnectedTest extends Component {
         this.setState({
           userResponse: undefined,
           wonRound: true,
-          currentWordIndex: this.state.currentWordIndex + 1,
-          borderColor: 1
+          currentWordIndex: this.state.currentWordIndex + 1
         });
         // clearTimeout(timer);
         // setTimeout(this.nextWord, 1000);
         this.cancel();
         await this.delay(1000, false);
-        this.setState({ borderColor: 0 });
         this.nextWord();
       } else {
-        this.setState({ lost: true, borderColor: 2 });
+        this.setState({ lost: true });
       }
     }
   };
@@ -211,47 +203,14 @@ class UnconnectedTest extends Component {
     // setTimeout(this.nextWord, 500);
   };
 
-  borderColor = () => {
-    if (this.state.borderColor === 0) {
-      return "border";
-    }
-    if (this.state.borderColor === 1) {
-      return "border-green";
-    }
-    if (this.state.borderColor === 2) {
-      return "border-red";
-    }
-  };
-
-  updateUserInfo = async () => {
-    console.log(this.state._id);
-    let data = new FormData();
-    data.append("id", this.state._id);
-    let response = await fetch("/updateUserInfo", {
-      method: "POST",
-      credentials: "include",
-      body: data
-    });
-    let responseBody = await response.text();
-    let body = JSON.parse(responseBody);
-    if (body.success) {
-      console.log("Level Complete");
-      this.setState({
-        won: false,
-        inSession: false,
-        engWord: "Level Complete! Press Space to return to Menu."
-      });
-    }
-  };
-
   render() {
-    // console.log("won: ", this.state.won);
-    // console.log("test: ", this.state.test);
+    console.log("won: ", this.state.won);
+    console.log("test: ", this.state.test);
     // console.log("current key: ", this.state.currentKey);
     // console.log("createGameArray: ", this.state.createGameArray);
-    // console.log("gameLength: ", this.state.gameLength);
-    // console.log("currentWordIndex: ", this.state.currentWordIndex);
-    // console.log("gameArray: ", this.state.gameArray);
+    console.log("gameLength: ", this.state.gameLength);
+    console.log("currentWordIndex: ", this.state.currentWordIndex);
+    console.log("gameArray: ", this.state.gameArray);
     if (this.state.createGameArray) {
       this.createGame();
       this.setState({ startGame: true });
@@ -263,7 +222,7 @@ class UnconnectedTest extends Component {
     }
 
     if (this.state.lost) {
-      this.cancel();
+      alert("game lost");
       this.setState({
         lost: false,
         inSession: false,
@@ -277,28 +236,27 @@ class UnconnectedTest extends Component {
         gameLength: 0,
         currentWordIndex: 0,
         wonRound: false,
-        userResponse: undefined,
-        borderColor: 2
+        userResponse: undefined
       });
       this.preGame();
     }
 
     if (this.state.won) {
-      this.updateUserInfo();
+      this.setState({
+        inSession: false,
+        engWord: "Level Complete! Press Space to return to Menu."
+      });
     }
 
     return (
-      <div className="practice-container flex-horizontal-center">
-        <div
-          className={` height-500 practice-container padding-top-bottom margin-top-50 overflow-visible ${this.borderColor()}`}
-        >
-          <div className="col padding-bottom-100">
+      <div className="border practice-container flex-horizontal-center">
+        <div className="border practice-container padding-top-bottom margin-top-10">
+          <div className="col border padding">
             <div>{this.state.engWord}</div>
           </div>
-          <div className="col padding">
-            <div className="font-color-grey">
-              Press F key for correct word and J key for incorrect word within 2
-              seconds.
+          <div className="col border padding">
+            <div>
+              Press F key for correct word and J key for incorrect word.
             </div>
           </div>
         </div>
@@ -307,6 +265,6 @@ class UnconnectedTest extends Component {
   }
 }
 
-let Test = connect()(withRouter(UnconnectedTest));
+let Test2 = connect()(withRouter(UnconnectedTest));
 
-export default Test;
+export default Test2;

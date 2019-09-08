@@ -41,41 +41,61 @@ class UnconnectedLogin extends Component {
   };
 
   render() {
-    return (
-      <div class="login-container">
-        <div class="login-center">
-          <div class="signin-text">Sign in</div>
-          <form onSubmit={this.submitHandler}>
-            <div>
+    if (this.props.loginStatus) {
+      return (
+        <div className="login-container logged-in flex-justify-right">
+          <div className="flex-column display-flex">
+            <div className="margin-right margin-top-420">
               {" "}
-              <input
-                class="textbox"
-                type="text"
-                onChange={this.usernameChangeHandler}
-                placeholder="Username"
-                required
-              />
+              Welcome {this.props.username}!
             </div>
-            <div>
-              <input
-                class="textbox"
-                type="text"
-                onChange={this.passwordChangeHandler}
-                placeholder="Password"
-                required
-              />
+            <div
+              className="menu-button border margin-right"
+              onClick={() => {
+                this.props.history.push("/menu");
+              }}
+            >
+              Menu
             </div>
-            <input type="submit" value="Login" />
-          </form>
-          <div>
-            <Link to="/signup">Create An Account</Link>
           </div>
         </div>
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div className="login-container ">
+          <form onSubmit={this.submitHandler}>
+            <div className="login-center">
+              <div>
+                <input
+                  className="textbox"
+                  type="text"
+                  onChange={this.usernameChangeHandler}
+                  placeholder="Username"
+                  required
+                />
+              </div>
+              <div>
+                <input
+                  className="textbox"
+                  type="password"
+                  onChange={this.passwordChangeHandler}
+                  placeholder="Password"
+                  required
+                />
+              </div>
+              <input className="submit-login" type="submit" value="Login" />
+            </div>
+          </form>
+        </div>
+      );
+    }
   }
 }
 
-let Login = connect()(UnconnectedLogin);
+let mapStateToProps = state => {
+  return { loginStatus: state.loginStatus, username: state.username };
+};
+
+let Login = connect(mapStateToProps)(UnconnectedLogin);
 
 export default Login;

@@ -1,6 +1,7 @@
 nav {
-  background: #fdf5ae;
+  /* background: #fdf5ae; */
   /* background: #698a80da; */
+  background: #f57979;
   padding: 5px 20px;
   /* font-family: "IBM Plex Sans", sans-serif; */
   font-family: "B612 Mono", monospace;
@@ -14,12 +15,14 @@ ul {
   list-style-type: none;
 }
 a {
-  color: #f57979;
+  /* color: #f57979; */
   /* color: #f59a7ee3; */
+  color: #fdf5ae;
   text-decoration: none;
 }
 .logo {
-  color: #f57979;
+  /* color: #f57979; */
+  color: #fdf5ae;
   /* color: #eb6a43; */
   font-weight: 700;
 }
@@ -97,10 +100,10 @@ a:hover {
     order: 2;
   }
   .button.secondary {
-    border: 0;
   }
   .button a {
     padding: 7.5px 15px;
+    border: 1px #f57979c5 solid;
   }
   .button.secondary a {
     color: #f57979;
@@ -112,6 +115,9 @@ a:hover {
   .button a:hover {
     background: #fdf5ae;
     border-color: #f57979c5;
+    border-radius: 4px;
+    border: 1px #f57979c5 solid;
+    cursor: pointer;
   }
   .button.secondary a:hover {
     color: rgba(17, 17, 17, 0.712);
