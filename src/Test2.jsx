@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
-let timer;
 let counter = 0;
+
+//Level 2 is randomizes the array of words to add a level of difficulty
 
 class UnconnectedTest2 extends Component {
   constructor(props) {
@@ -65,6 +66,21 @@ class UnconnectedTest2 extends Component {
     counter++;
   };
 
+  shuffle = arr => {
+    let currentIndex = arr.length,
+      temporaryValue,
+      randomIndex;
+    while (0 !== currentIndex) {
+      randomIndex = Math.floor(Math.floor(Math.random() * currentIndex));
+      currentIndex -= 1;
+
+      temporaryValue = arr[currentIndex];
+      arr[currentIndex] = arr[randomIndex];
+      arr[randomIndex] = temporaryValue;
+    }
+    return arr;
+  };
+
   handleKeyPress = async e => {
     this.setState({ currentKey: e.keyCode });
     if (e.keyCode === 32 && !this.state.inSession) {
@@ -91,8 +107,6 @@ class UnconnectedTest2 extends Component {
           currentWordIndex: this.state.currentWordIndex + 1
         });
         this.cancel();
-        // clearTimeout(timer);
-        // setTimeout(this.nextWord, 1000);
         await this.delay(1000, false);
         this.nextWord();
       } else {
@@ -110,8 +124,6 @@ class UnconnectedTest2 extends Component {
           wonRound: true,
           currentWordIndex: this.state.currentWordIndex + 1
         });
-        // clearTimeout(timer);
-        // setTimeout(this.nextWord, 1000);
         this.cancel();
         await this.delay(1000, false);
         this.nextWord();
@@ -154,6 +166,7 @@ class UnconnectedTest2 extends Component {
       }
     });
     gameArray = gameArray.concat(correctWords.reverse());
+    gameArray = this.shuffle(gameArray);
     this.setState({
       gameArray,
       createGameArray: false,
@@ -183,34 +196,20 @@ class UnconnectedTest2 extends Component {
     } else {
       this.setState({ lost: true });
     }
-    // setTimeout(() => {
-    //   this.soundHandler(this.state.gameArray[this.state.currentWordIndex].fr);
-    //   timer = setTimeout(() => {
-    //     if (this.state.wonRound) {
-    //       this.setState({ wonRound: false });
-    //       console.log("roundWon");
-    //     } else {
-    //       this.setState({ lost: true });
-    //     }
-    //   }, 5000);
-    // }, 1250);
   };
 
   startGame = () => {
-    console.log("in start game");
+    // console.log("in start game");
     this.delay(500, false);
     this.nextWord();
-    // setTimeout(this.nextWord, 500);
   };
 
   render() {
-    console.log("won: ", this.state.won);
-    console.log("test: ", this.state.test);
-    // console.log("current key: ", this.state.currentKey);
-    // console.log("createGameArray: ", this.state.createGameArray);
-    console.log("gameLength: ", this.state.gameLength);
-    console.log("currentWordIndex: ", this.state.currentWordIndex);
-    console.log("gameArray: ", this.state.gameArray);
+    // console.log("won: ", this.state.won);
+    // console.log("test: ", this.state.test);
+    // console.log("gameLength: ", this.state.gameLength);
+    // console.log("currentWordIndex: ", this.state.currentWordIndex);
+    // console.log("gameArray: ", this.state.gameArray);
     if (this.state.createGameArray) {
       this.createGame();
       this.setState({ startGame: true });
