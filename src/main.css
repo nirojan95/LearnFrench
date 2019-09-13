@@ -22,8 +22,7 @@ body {
   background-color: white;
 }
 
-/* input,
-.btn {
+.signup-button {
   width: 100%;
   padding: 12px;
   border: none;
@@ -33,21 +32,21 @@ body {
   display: inline-block;
   font-size: 17px;
   line-height: 20px;
-  text-decoration: none; 
+  text-decoration: none;
 }
 
-.login-container {
+.signup-container {
   text-align: center;
   border: 1px solid #bbb;
   font-family: roboto, "Noto Sans Myanmar UI", arial, sans-serif;
 }
-.login-center {
+.signup-center {
   padding: 20px;
   margin: 100px;
   display: inline-block;
   border: 1px solid #bbb;
   border-radius: 3px;
-} */
+}
 
 .signin-text {
   font-size: 25px;
@@ -56,6 +55,10 @@ body {
 .signup-text {
   font-size: 25px;
   margin-bottom: 30px;
+}
+
+.login-link {
+  color: #f57979;
 }
 
 /* .textbox {

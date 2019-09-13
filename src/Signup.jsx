@@ -34,12 +34,11 @@ class UnconnectedSignup extends Component {
   };
   render() {
     return (
-      <div class="login-container">
-        <div class="login-center">
-          <div class="signup-text">Sign Up</div>
+      <div class="signup-container">
+        <div class="signup-center">
+          <div class="signupText">Sign Up</div>
           <form onSubmit={this.submitHandler}>
             <div>
-              {" "}
               <input
                 class="textbox"
                 type="text"
@@ -49,7 +48,6 @@ class UnconnectedSignup extends Component {
               />
             </div>
             <div>
-              {" "}
               <input
                 class="textbox"
                 type="text"
@@ -67,10 +65,16 @@ class UnconnectedSignup extends Component {
                 required
               />
             </div>
-            <input type="submit" value="Create Account" />
+            <input
+              className="signup-button"
+              type="submit"
+              value="Create Account"
+            />
           </form>
           <div>
-            <Link to="/login">Already have an Account? Sign in!</Link>
+            <Link className="login-link" to="/login">
+              Already have an Account? Sign in!
+            </Link>
           </div>
         </div>
       </div>

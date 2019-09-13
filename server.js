@@ -37,6 +37,10 @@ let generateid = () => {
 };
 
 // Your endpoints go after this line
+app.get("/", (req, res) => {
+  res.send("Welcome to a basic express App");
+});
+
 app.get("/addData", (req, res) => {
   dbo.collection("data").insertOne(testData);
   res.send({ success: true });
