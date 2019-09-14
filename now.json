@@ -1,45 +1,10 @@
 {
   "version": 2,
-  "builds": [{ "src": "server.js", "use": "@now/node-server" }],
+  "builds": [{ "src": "index.js", "use": "@now/node-server" }],
   "routes": [
     {
-      "src": "/",
-      "dest": "/server.js",
-      "methods": ["GET"]
-    },
-    {
-      "src": "/addData",
-      "dest": "/server.js",
-      "methods": ["GET"]
-    },
-    {
-      "src": "/login",
-      "dest": "/server.js",
-      "methods": ["POST"]
-    },
-    {
-      "src": "/checkLogin",
-      "dest": "/server.js",
-      "methods": ["GET"]
-    },
-    {
-      "src": "/signup",
-      "dest": "/server.js",
-      "methods": ["POST"]
-    },
-    {
-      "src": "/getMenu",
-      "dest": "/server.js",
-      "methods": ["GET"]
-    },
-    {
-      "src": "/getPractice",
-      "dest": "/server.js",
-      "methods": ["POST"]
-    },
-    { "src": "/getTest", "dest": "/server.js", "methods": ["POST"] },
-    { "src": "/textToSpeech", "dest": "/server.js", "methods": ["GET"] },
-    { "src": "/logout", "dest": "/server.js", "methods": ["GET"] },
-    { "src": "/updateUserInfo", "dest": "/server.js", "methods": ["POST"] }
+      "src": "/.*",
+      "dest": "index.js"
+    }
   ]
 }
