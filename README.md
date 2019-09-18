@@ -2,7 +2,7 @@
 
 ## Summary
 
-Learn French is a language learning site for improving listening comprehension with an immersive learning experience.
+Learn French is a language learning site for improving listening comprehension with an immersive learning experience. The French audio is created with Google's Text-to-Speech API.
 
 **Demo**: https://www.youtube.com/watch?v=KPm5Ps1zDP0
 
