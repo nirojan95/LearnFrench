@@ -13,7 +13,7 @@ class UnconnectedLogin extends Component {
     this.setState({ username: e.target.value });
   };
 
-  passowrdChangeHandler = e => {
+  passwordChangeHandler = e => {
     this.setState({ password: e.target.value });
   };
 

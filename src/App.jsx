@@ -119,5 +119,3 @@ let mapStateToProps = state => {
 let App = connect(mapStateToProps)(UnconnectedApp);
 
 export default App;
-
-// --mode production
