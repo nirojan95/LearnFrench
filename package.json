@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "build": "webpack --mode production"
+    "build": "webpack"
   },
   "keywords": [],
   "author": "Jacques Le Normand",
