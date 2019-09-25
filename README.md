@@ -26,6 +26,10 @@ Deployed with Heroku.
 
 > `npm start`
 
+###### Run Build Before Deploying:
+
+> `npm run build`
+
 ###### Connect to your MongoDB database (server.js line 24):
 
 > `let url = "ADD YOUR URL HERE";`
