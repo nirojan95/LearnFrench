@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const reloadMagic = require("./reload-magic.js");
+// const reloadMagic = require("./reload-magic.js");
 const multer = require("multer");
 const upload = multer();
 
@@ -26,7 +26,7 @@ MongoClient.connect(url, { useNewUrlParser: true }, (err, db) => {
   dbo = db.db("LearnFrench");
 });
 
-reloadMagic(app);
+// reloadMagic(app);
 
 app.use(cookieParser());
 app.use("/", express.static("build")); // Needed for the HTML and JS files
