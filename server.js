@@ -2,32 +2,8 @@ const express = require("express");
 const app = express();
 const reloadMagic = require("./reload-magic.js");
 const multer = require("multer");
-// const multerS3 = require("multer-s3");
-// const aws = require("aws-sdk");
+const upload = multer();
 
-// aws.config.update({
-//   secretAccessKey: "123455",
-//   accessKeyId: "nirojan95",
-//   region: "us-east-1"
-// });
-
-// s3 = new aws.S3();
-
-// var upload = multer({ dest: __dirname + "uploads" });
-
-var upload = multer();
-// {
-//   storage: multerS3({
-//     s3: s3,
-//     bucket: "bucket-name",
-//     key: function(req, file, cb) {
-//       console.log(file);
-//       cb(null, file.originalname); //use Date.now() for unique file keys
-//     }
-//   })
-// }
-
-// const upload = multer({ dest: "/tmp" });
 const cookieParser = require("cookie-parser");
 const MongoClient = require("mongodb").MongoClient;
 const ObjectId = require("mongodb").ObjectID;
