@@ -382,6 +382,8 @@ app.all("/*", (req, res, next) => {
   res.sendFile(__dirname + "/build/index.html");
 });
 
-app.listen(4000, "0.0.0.0", () => {
-  console.log("Server running on port 4000");
+const port = process.env.PORT || 8000;
+
+server.listen(port, () => {
+  console.log("App is running on port " + port);
 });
