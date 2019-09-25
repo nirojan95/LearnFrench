@@ -4,6 +4,8 @@
 
 Learn French is a language learning site for improving listening comprehension with an immersive learning experience. The French audio is created with Google's Text-to-Speech API.
 
+**Website**: https://learn-french-now.herokuapp.com/
+
 **Demo**: https://www.youtube.com/watch?v=KPm5Ps1zDP0
 
 ## Technologies
@@ -11,6 +13,8 @@ Learn French is a language learning site for improving listening comprehension w
 **Front-end** : Javascript, React, Redux, CSS, Puppeteer.
 
 **Back-end** : Node.js, Express, MongoDB.
+
+Deployed with Heroku.
 
 ## How to run
 
