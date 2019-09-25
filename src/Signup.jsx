@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
 class UnconnectedSignup extends Component {
@@ -30,6 +30,9 @@ class UnconnectedSignup extends Component {
     let body = JSON.parse(responseBody);
     if (!body.success) {
       alert("Not a valid username");
+    } else {
+      alert("Account Created! ");
+      this.props.history.push("/");
     }
   };
   render() {
@@ -42,15 +45,6 @@ class UnconnectedSignup extends Component {
               <input
                 class="textbox"
                 type="text"
-                onChange={this.nameChangeHandler}
-                placeholder="Name"
-                required
-              />
-            </div>
-            <div>
-              <input
-                class="textbox"
-                type="text"
                 onChange={this.usernameChangeHandler}
                 placeholder="Email"
                 required
@@ -59,7 +53,7 @@ class UnconnectedSignup extends Component {
             <div>
               <input
                 class="textbox"
-                type="text"
+                type="password"
                 onChange={this.passwordChangeHandler}
                 placeholder="Password"
                 required
@@ -72,7 +66,7 @@ class UnconnectedSignup extends Component {
             />
           </form>
           <div>
-            <Link className="login-link" to="/login">
+            <Link className="login-link" to="/">
               Already have an Account? Sign in!
             </Link>
           </div>
@@ -82,6 +76,6 @@ class UnconnectedSignup extends Component {
   }
 }
 
-let Signup = connect()(UnconnectedSignup);
+let Signup = connect()(withRouter(UnconnectedSignup));
 
 export default Signup;
