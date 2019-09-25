@@ -22,6 +22,6 @@ Learn French is a language learning site for improving listening comprehension w
 
 > `npm start`
 
-###### Connect to your MongoDB database (index.js line 45):
+###### Connect to your MongoDB database (server.js line 24):
 
-> `45 let url = "ADD YOUR URL HERE";`
+> `let url = "ADD YOUR URL HERE";`
