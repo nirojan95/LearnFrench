@@ -13,7 +13,9 @@ const multer = require("multer");
 
 // s3 = new aws.S3();
 
-var upload = multer({ dest: __dirname + "uploads" });
+// var upload = multer({ dest: __dirname + "uploads" });
+
+var upload = multer();
 // {
 //   storage: multerS3({
 //     s3: s3,
