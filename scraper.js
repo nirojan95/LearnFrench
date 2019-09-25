@@ -12,37 +12,6 @@ MongoClient.connect(url, { useNewUrlParser: true }, (err, db) => {
   dbo = db.db("LearnFrench");
 });
 
-// const url = "https://google.com";
-// if (!url) {
-//   throw "Please provide a URL as the first argument";
-// }
-// async function run() {
-//   const browser = await puppeteer.launch();
-//   const page = await browser.newPage();
-//   await page.goto(url);
-//   await page.screenshot({ path: "screenshot.png" });
-//   browser.close();
-// }
-// run();
-// Apify.main(async () => {
-//     const input = await Apify.getValue('INPUT');
-//     const browser = await Apify.launchPuppeteer();
-//     const page = await browser.newPage();
-//     await page.goto('https://facebook.com');
-//     // Login
-//     await page.type('#email', input.username);
-//     await page.type('#pass', input.password);
-//     await page.click('#loginbutton input');
-//     await page.waitForNavigation();
-//     // Get cookies
-//     const cookies = await page.cookies();
-//     // Use cookies in other tab or browser
-//     const page2 = await browser.newPage();
-//     await page2.setCookie(...cookies);
-//     await page2.goto('https://facebook.com'); // Opens page as logged user
-//     await browser.close();
-//     console.log('Done.');
-// });
 let delay = interval => new Promise(res => setTimeout(res, interval));
 async function main() {
   const browser = await puppeteer.launch({ headless: false });
@@ -51,19 +20,19 @@ async function main() {
   await page.goto(
     "https://www.frenchpod101.com/lesson/business-french-for-beginners-3-describing-your-profession-in-french/?lp=151",
     { waitUntil: "networkidle0" }
-  ); // wait until page load
+  );
+
   await page.mouse.click(0, 0);
   await page.hover("div.dashbar-a__block--sign-in.js-dashbar-a-nav");
-  //await delay(500)
+
   await page.waitFor("form#header_signing input[type=text]");
   await delay(2000);
   console.log("first delay done");
-  // await page.mouse.click("input[name='amember_login']");
-  //await delay(2000)
+
   console.log("second delay done");
   await page.type("input[name='amember_login']", CREDS.username);
   await page.type("form#header_signing input[type=password]", CREDS.password);
-  // // click and wait for navigation
+
   await Promise.all([
     page.click(".r101-button-30--f"),
     page.waitForNavigation({ waitUntil: "networkidle0" })

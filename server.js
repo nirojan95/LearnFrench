@@ -384,6 +384,6 @@ app.all("/*", (req, res, next) => {
 
 const port = process.env.PORT || 8000;
 
-server.listen(port, () => {
+app.listen(port, () => {
   console.log("App is running on port " + port);
 });
